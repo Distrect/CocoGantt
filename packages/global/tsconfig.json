@@ -1,0 +1,15 @@
+{
+  "extends": "../../config/base.ts.config",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "allowArbitraryExtensions": false,
+
+    "target": "es6",
+    "module": "commonjs",
+    "jsx": "react-jsx",
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true
+  },
+  "exclude": ["node_modules", "./dist/**/*"]
+}
