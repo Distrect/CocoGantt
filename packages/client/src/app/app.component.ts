@@ -1,5 +1,4 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { ToolbarItem, EditSettingsModel } from '@syncfusion/ej2-angular-gantt';
 
 @Component({
   selector: 'app-root',

@@ -16,10 +16,6 @@ export interface IValidateFieldArgs {
   value: string;
 }
 
-const customFn = (e: any) => {
-  console.log('E', e);
-};
-
 @Injectable()
 export class GantChartSettingService {
   private ganttChartComponent?: GanttComponent;
@@ -58,6 +54,12 @@ export class GantChartSettingService {
     {
       field: 'Progress',
       headerText: 'Progress',
+      width: '100px',
+      textAlign: 'Center',
+    },
+    {
+      field: 'isManual',
+      headerText: 'Scheduling Mode',
       width: '100px',
       textAlign: 'Center',
     },
@@ -128,10 +130,13 @@ export class GantChartSettingService {
     progress: 'Progress',
     dependency: 'Predecessor',
     durationUnit: 'DurationUnit',
+    parentID: 'parentID',
+    milestone: 'milestone',
     child: 'subtasks',
     optimisticTime: 'optimisticTime',
     pessimisticTime: 'pessimisticTime',
     mostLikely: 'mostLikely',
+    manual: 'isManual',
   };
 
   public readonly toolbarItems: ToolbarItem[] = [
@@ -193,7 +198,7 @@ export class GantChartSettingService {
     ...this.addDialogFields,
   ];
 
-  public taskMode: 'Auto' | 'Manual' | 'Custom' = 'Auto';
+  public taskMode: 'Auto' | 'Manual' | 'Custom' = 'Custom';
 
   public readonly dayWorkingTime: { from: number; to: number } = {
     from: 8,
@@ -244,6 +249,7 @@ export class GantChartSettingService {
 
     const index = taskModes.indexOf(this.taskMode) + 1;
     const left = index % 3 ? index + 1 : 1;
+    let x = taskModes[left - 1];
     this.taskMode = taskModes[left - 1];
     this.refreshGanttChart();
 

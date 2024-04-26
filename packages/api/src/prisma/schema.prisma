@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+
+model Project{
+  projectID Int @default(autoincrement()) @id
+  projectName String? @default("New Project")
+  createdAt DateTime? @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+
+
+model Task{
+  taskID Int @default(autoincrement()) @id
+  taskName String
+  startDate DateTime
+  endDate DateTime
+  duration Int
+  progress Int
+
+  optimisticTime Int
+  mostLikelyTime Int
+  pessimisticTime Int
+  successProbability Int
+
+  parentID Int
+  level Int
+  index Int
+  predecessor String
+  isMileStone Boolean
+  isManual Boolean
+}
+
+model Functionpoint{
+  fpID Int @default(autoincrement()) @id
+  EI String
+  EO String
+  EQ String
+  ILF String
+  ELF String
+}
+
+model CAF{
+  cafID Int @default(autoincrement()) @id
+  DC Int
+  DP Int
+  DS Int
+  P Int
+  S Int
+  UI Int
+  R Int
+  EoI Int
+  OE Int
+  ODS Int
+  OTV Int
+  CU Int
+  ISPF Int
+  ICC Int
+}
+
+

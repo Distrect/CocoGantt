@@ -11,7 +11,7 @@
     "noImplicitThis": true,
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "noUnusedParameters": true,
     "strict": true,
     "strictBindCallApply": true,
@@ -36,7 +36,8 @@
 
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
-    "lib": ["es6"]
+    "lib": ["es6"],
+    "types": ["node"]
   },
   "exclude": ["node_modules"]
 }

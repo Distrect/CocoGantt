@@ -22,21 +22,3 @@ interface ITaskDependency {
 export interface ExtendedTaskFieldsModel extends TaskFieldsModel {
   optimisticTime: string;
 }
-
-interface ITaskBase {
-  id: number;
-  taskName: string;
-  startDate: Date;
-  endDate: Date;
-  duration: number;
-  progress: number;
-}
-
-interface ITaskPert {
-  optimisticTime: number;
-  mostLikelyTime: number;
-  pessimisticTime: number;
-  successProbability: number;
-}
-
-export interface ITask extends ITaskBase, ITaskPert {}
