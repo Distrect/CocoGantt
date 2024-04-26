@@ -67,3 +67,17 @@ model CAF{
 }
 
 
+model Cocomo{
+  cocomoID Int @default(autoincrement()) @id
+  mode String
+}
+
+
+
+model TeamMember{
+  teamID Int @default(autoincrement()) @id
+  memberName String
+  title String
+}
+
+
