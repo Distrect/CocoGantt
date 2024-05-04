@@ -41,11 +41,7 @@ model Task{
 
 model Functionpoint{
   fpID Int @default(autoincrement()) @id
-  EI String
-  EO String
-  EQ String
-  ILF String
-  ELF String
+  attributes String
 }
 
 model CAF{
@@ -70,6 +66,7 @@ model CAF{
 model Cocomo{
   cocomoID Int @default(autoincrement()) @id
   mode String
+  cafJson String
 }
 
 

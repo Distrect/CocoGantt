@@ -1,10 +1,8 @@
 import { Functionpoint } from '@prisma/client';
+import { IFunctionPointAttributes } from 'shared';
+import { IFunctionPointEntity } from 'src/database/entity/functionPoint/functionPoint.entity.interface';
 
-export class FunctionPointEntity implements Functionpoint {
+export class FunctionPointEntity implements IFunctionPointEntity {
   public fpID: number;
-  public EI: string;
-  public EO: string;
-  public EQ: string;
-  public ILF: string;
-  public ELF: string;
+  public attributes: IFunctionPointAttributes;
 }
