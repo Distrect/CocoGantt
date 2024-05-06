@@ -30,6 +30,9 @@ model Task{
   mostLikelyTime Int
   pessimisticTime Int
   successProbability Int
+  crashDay Int
+  crashCost Int
+  normalCost Int
 
   parentID Int
   level Int
@@ -44,29 +47,11 @@ model Functionpoint{
   attributes String
 }
 
-model CAF{
-  cafID Int @default(autoincrement()) @id
-  DC Int
-  DP Int
-  DS Int
-  P Int
-  S Int
-  UI Int
-  R Int
-  EoI Int
-  OE Int
-  ODS Int
-  OTV Int
-  CU Int
-  ISPF Int
-  ICC Int
-}
 
 
 model Cocomo{
   cocomoID Int @default(autoincrement()) @id
   mode String
-  cafJson String
 }
 
 

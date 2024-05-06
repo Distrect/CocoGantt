@@ -1,4 +1,4 @@
-import { IFunctionPointAttributes } from '../interfaces/functionPoint.interface';
+import { IFunctionPointAttributes } from '../interfaces/project/functionPoint.interface';
 
 export const functionPointAttributes: IFunctionPointAttributes = {
   EI: {

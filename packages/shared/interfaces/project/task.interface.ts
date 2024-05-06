@@ -1,4 +1,4 @@
-import { ITimeStamp } from '../local/shared.interface';
+import { ITimeStamp } from '../../local/shared.interface';
 
 interface ITaskBase {
   id: number;

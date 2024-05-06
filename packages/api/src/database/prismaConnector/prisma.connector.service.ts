@@ -8,5 +8,6 @@ export default class PrismaConnectorService
 {
   public async onModuleInit(): Promise<void> {
     await this.$connect();
+    this.
   }
 }

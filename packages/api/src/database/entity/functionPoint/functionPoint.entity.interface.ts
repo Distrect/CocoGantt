@@ -1,5 +1,9 @@
 import { Functionpoint } from '@prisma/client';
-import { IFunctionPointAttributes } from 'shared';
+import {
+  BaseFunctionPoint,
+  IFunctionPointAttributes,
+  ModelID,
+} from 'shared/interfaces';
 
 interface IOverridedJSONField {
   attributes: IFunctionPointAttributes;
@@ -16,6 +20,4 @@ export type ConvertOutput<T extends ConvertMode> = T extends 'toString'
   ? IFunctionPointEntity
   : Functionpoint;
 
-export type Omitter = Omit<IFunctionPointEntity, 'fpID'>;
-
-export type ModelID = Functionpoint['fpID'];
+export type FPID = ModelID<BaseFunctionPoint, 'fpID'>;

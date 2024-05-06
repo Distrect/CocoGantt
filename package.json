@@ -29,10 +29,12 @@
       "packages/*"
     ],
     "nohoist": [
-      "**/client",
-      "**/api",
-      "**/client/**",
-      "**/api/**"
+      "**/@syncfusion",
+      "**/@syncfusion/**",
+      "**@angular",
+      "**@angular/**",
+      "**/@nestjs",
+      "**/@nestjs/**"
     ]
   },
   "dependencies": {},

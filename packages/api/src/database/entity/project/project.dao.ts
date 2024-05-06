@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { IProjectEntity } from 'src/database/entity/project/project.entity.interface';
 import PrismaConnectorService from 'src/database/prismaConnector/prisma.connector.service';
+import { RecordNotFoundError } from 'src/shared/errors';
 
 @Injectable()
 export default class ProjectDAO {
@@ -10,7 +11,8 @@ export default class ProjectDAO {
   public async getProject(args: Prisma.ProjectFindUniqueArgs) {
     const projectRecord = await this.prisma.project.findUnique(args);
 
-    if (projectRecord === null) throw new Error('Record Not Found');
+    if (projectRecord === null)
+      throw new RecordNotFoundError('Record Not Found');
 
     return projectRecord;
   }
@@ -30,7 +32,8 @@ export default class ProjectDAO {
       where: { projectID },
     });
 
-    if (updatedRecord === null) throw new Error('Record Not Found');
+    if (updatedRecord === null)
+      throw new RecordNotFoundError('Record Not Found');
 
     return updatedRecord;
   }
@@ -40,6 +43,7 @@ export default class ProjectDAO {
       where: { projectID },
     });
 
-    if (deletedRecord === null) throw new Error('Record Not Found');
+    if (deletedRecord === null)
+      throw new RecordNotFoundError('Record Not Found');
   }
 }

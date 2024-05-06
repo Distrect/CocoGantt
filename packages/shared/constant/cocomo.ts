@@ -1,4 +1,4 @@
-import { ICOCOMOTable } from './../interfaces/cocomo.interface';
+import { ICOCOMOTable } from '../interfaces/project/cocomo.interface';
 
 export const cocomoTable: ICOCOMOTable = {
   organic: { a: [2.4, 3.2], b: [1.05, 1.05], c: 2.5, d: 0.38 },
