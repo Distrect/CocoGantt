@@ -2,7 +2,6 @@ import {
   Functionpoint,
   Project,
   Cocomo,
-  CAF,
   Task,
   TeamMember,
 } from '@prisma/client';

@@ -26,20 +26,20 @@ export default class COCOMODao {
     this.model = prisma.cocomo;
   }
 
-  public cocomoConverter<T extends ConvertMode>(
-    mode: T,
-    record: Partial<ConvertOutput<T, ICocomoEntity, BaseCocomo>>,
-  ): shortCut<T> {
-    if (mode === 'toJSON') {
-      (record as ICocomoEntity).cafJson = JSON.parse(record.cafJson as string);
+  // public cocomoConverter<T extends ConvertMode>(
+  //   mode: T,
+  //   record: Partial<ConvertOutput<T, ICocomoEntity, BaseCocomo>>,
+  // ): shortCut<T> {
+  //   if (mode === 'toJSON') {
+  //     (record as ICocomoEntity).cafJson = JSON.parse(record.cafJson as string);
 
-      return record as ReturnConverter<T>;
-    }
+  //     return record as ReturnConverter<T>;
+  //   }
 
-    (record as BaseCocomo).cafJson = JSON.stringify(record.cafJson as ICAF);
+  //   (record as BaseCocomo).cafJson = JSON.stringify(record.cafJson as ICAF);
 
-    return record as ReturnConverter<T>;
-  }
+  //   return record as ReturnConverter<T>;
+  // }
 
   public async getCocomoRecord(cocomoID: BaseCocomo['cocomoID']) {
     const cocomoRecord = await this.model.findUnique({ where: { cocomoID } });
@@ -50,12 +50,12 @@ export default class COCOMODao {
     return cocomoRecord;
   }
 
-  public async createCocomoRecord(data: ICocomoEntity) {
-    const convertedData = this.cocomoConverter('toString', data);
+  public async createCocomoRecord(data: Prisma.CocomoCreateInput) {
+    // const convertedData = this.cocomoConverter('toString', data);
 
-    const newCocomoRecord = await this.model.create({ data: convertedData });
+    const newCocomoRecord = await this.model.create({ data });
 
-    return this.cocomoConverter('toJSON', newCocomoRecord);
+    return newCocomoRecord;
   }
 
   public async deleteCocomoRecord(cocomoID: BaseCocomo['cocomoID']) {
@@ -64,17 +64,20 @@ export default class COCOMODao {
     return;
   }
 
-  public async updateCocomoRecord(data: UpdateRecordData) {
-    const { cocomoID, ...rest } = this.cocomoConverter('toString', data);
+  public async updateCocomoRecord(
+    cocomoID: number,
+    data: Prisma.CocomoUpdateInput,
+  ) {
+    // const { cocomoID, ...rest } = this.cocomoConverter('toString', data);
 
     const updatedCocomoRecord = await this.model.update({
       where: { cocomoID },
-      data: rest,
+      data,
     });
 
     if (updatedCocomoRecord === null)
       throw new RecordNotFoundError(`Record with id ${cocomoID}`);
 
-    return this.cocomoConverter('toJSON', updatedCocomoRecord);
+    return updatedCocomoRecord;
   }
 }

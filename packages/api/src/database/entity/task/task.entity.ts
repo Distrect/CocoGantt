@@ -17,4 +17,8 @@ export default class TaskEntity implements Task {
   public predecessor: string;
   public isMileStone: boolean;
   public isManual: boolean;
+
+  public crashDay: number;
+  public crashCost: number;
+  public normalCost: number;
 }
