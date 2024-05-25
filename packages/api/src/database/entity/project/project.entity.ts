@@ -1,5 +1,7 @@
 import CocomoEntity from '@entities/cocomo/cocomo.entity';
 import FunctionPointEntity from '@entities/functionPoint/functionPoint.entity';
+import GanttEntity from '@entities/gantt/gant.entity';
+import TaskEntity from '@entities/task/task.entity';
 import TeamMemberEntity from '@entities/teamMember/teamMember.entity';
 import {
   Entity,
@@ -42,7 +44,10 @@ export default class ProjectEntity {
 
   @OneToMany(
     () => TeamMemberEntity,
-    (teamMemberEntity) => teamMemberEntity.teamMemberID,
+    (teamMemberEntity) => teamMemberEntity.project,
   )
   teamMembers: TeamMemberEntity[];
+
+  @OneToMany(() => GanttEntity, (ganttEntity) => ganttEntity.project)
+  gantt: GanttEntity;
 }

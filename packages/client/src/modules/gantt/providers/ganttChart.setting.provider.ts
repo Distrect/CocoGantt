@@ -215,7 +215,7 @@ export class GantChartSettingService {
 
   private refreshGanttChart() {
     if (this.ganttChartComponent === undefined)
-      throw new RecordNotFoundError('Gantt Component not initialized');
+      throw new Error('Gantt Component not initialized');
 
     this.ganttChartComponent.refresh();
   }

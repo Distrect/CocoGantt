@@ -30,3 +30,10 @@ export interface ITask
     ITaskPert,
     ITaskProperties,
     ITimeStamp {}
+
+export enum PredecessorType {
+  FS = 'Finish-to-Start',
+  SF = 'Start-to-Finish',
+  SS = 'Start-to-Start',
+  FF = 'Finish-to-Finish',
+}
