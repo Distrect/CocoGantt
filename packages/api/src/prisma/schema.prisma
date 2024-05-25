@@ -7,60 +7,64 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-model Project{
-  projectID Int @default(autoincrement()) @id
-  projectName String? @default("New Project")
-  createdAt DateTime? @default(now())
-  updatedAt DateTime @updatedAt
+model Project {
+  projectID     Int            @id @default(autoincrement())
+  projectName   String?        @default("New Project")
+  createdAt     DateTime?      @default(now())
+  updatedAt     DateTime       @updatedAt
+  functionPoint Functionpoint?
+  cocomo        Cocomo?
+  teamMembers   TeamMember[]
+  tasks         Task[]
 }
 
-
-
-
-model Task{
-  taskID Int @default(autoincrement()) @id
-  taskName String
+model Task {
+  taskID    Int      @id @default(autoincrement())
+  taskName  String
   startDate DateTime
-  endDate DateTime
-  duration Int
-  progress Int
+  endDate   DateTime
+  duration  Int
+  progress  Int
 
-  optimisticTime Int
-  mostLikelyTime Int
-  pessimisticTime Int
+  optimisticTime     Int
+  mostLikelyTime     Int
+  pessimisticTime    Int
   successProbability Int
-  crashDay Int
-  crashCost Int
-  normalCost Int
+  crashDay           Int
+  crashCost          Int
+  normalCost         Int
 
-  parentID Int
-  level Int
-  index Int
+  parentID    Int
+  level       Int
+  index       Int
   predecessor String
   isMileStone Boolean
-  isManual Boolean
+  isManual    Boolean
+
+  project          Project? @relation(fields: [foreignProjectID], references: [projectID])
+  foreignProjectID Int?     @unique()
 }
 
-model Functionpoint{
-  fpID Int @default(autoincrement()) @id
-  attributes String
+model Functionpoint {
+  fpID             Int      @id @default(autoincrement())
+  attributes       String   @default("{}")
+  caf              String   @default("{}")
+  project          Project? @relation(fields: [foreignProjectID], references: [projectID])
+  foreignProjectID Int?     @unique()
 }
 
-
-
-model Cocomo{
-  cocomoID Int @default(autoincrement()) @id
-  mode String
-  kloc Int
+model Cocomo {
+  cocomoID         Int      @id @default(autoincrement())
+  mode             String
+  kloc             Int
+  project          Project? @relation(fields: [foreignProjectID], references: [projectID])
+  foreignProjectID Int?     @unique()
 }
 
-
-
-model TeamMember{
-  teamID Int @default(autoincrement()) @id
-  memberName String
-  title String
+model TeamMember {
+  teamID           Int      @id @default(autoincrement())
+  memberName       String
+  title            String
+  project          Project? @relation(fields: [foreignProjectID], references: [projectID])
+  foreignProjectID Int?     @unique()
 }
-
-

@@ -1,4 +1,4 @@
-import { ILOC } from '../interfaces/loc.interface';
+import { ILOC } from './../interfaces/project/loc.interface';
 
 export const loc: ILOC[] = [
   { language: 'ABAP (SAP) ', avarage: 28, median: 18, low: 16, high: 60 },

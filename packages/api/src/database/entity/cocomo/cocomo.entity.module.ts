@@ -1,8 +1,11 @@
 import { Module } from '@nestjs/common';
-import { PrismaConnectorModule } from 'src/database/prismaConnector/prisma.connector.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import CocomoDAO from '@entities/cocomo/cocomo.dao';
+import CocomoEntity from '@entities/cocomo/cocomo.entity';
 
 @Module({
-  imports: [PrismaConnectorModule],
-  providers: [],
+  imports: [TypeOrmModule.forFeature([CocomoEntity])],
+  providers: [CocomoDAO],
+  exports: [CocomoDAO],
 })
-export default class COCOMOEntityModule {}
+export default class CocomoEntityModule {}

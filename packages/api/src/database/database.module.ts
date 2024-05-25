@@ -1,16 +1,19 @@
 import { Module } from '@nestjs/common';
-import FunctionpointEntityModule from 'src/database/entity/functionPoint/functionpoint.entity.module';
-import ProjectEntityModule from 'src/database/entity/project/project.entity.module';
-import TaskEntityModule from 'src/database/entity/task/task.entity.module';
-
-const entityModules = [
-  ProjectEntityModule,
-  FunctionpointEntityModule,
-  TaskEntityModule,
-];
+import { TypeOrmModule } from '@nestjs/typeorm';
+import CocomoEntityModule from '@entities/cocomo/cocomo.entity.module';
+import FunctionPointEntityModule from '@entities/functionPoint/functionPonint.entity.module';
 
 @Module({
-  imports: entityModules,
-  exports: entityModules,
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'sqlite',
+      database: 'db',
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: true,
+    }),
+    FunctionPointEntityModule,
+    CocomoEntityModule,
+  ],
+  exports: [FunctionPointEntityModule],
 })
-export class DatabaseModule {}
+export default class DatabaseModule {}

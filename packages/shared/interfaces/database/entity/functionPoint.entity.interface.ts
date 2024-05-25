@@ -1,9 +1,10 @@
-import { IJSONConverter } from './../db.utils.interface';
+import { Functionpoint } from '@prisma/client';
 import {
   ICAF,
   IFunctionPointAttributes,
 } from '../../project/functionPoint.interface';
-import { BaseFunctionPoint } from './base.entities';
+
+type Modify<T, K> = Omit<T, keyof K> & K;
 
 interface IOverridedJSONField {
   attributes: IFunctionPointAttributes;
@@ -11,8 +12,7 @@ interface IOverridedJSONField {
 }
 
 export interface IFunctionPointEntity
-  extends IJSONConverter<
-    BaseFunctionPoint,
-    IOverridedJSONField,
-    'attributes'
-  > {}
+  extends Modify<Functionpoint, IOverridedJSONField> {
+  attributes: IFunctionPointAttributes;
+  caf: ICAF;
+}

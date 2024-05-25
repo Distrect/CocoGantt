@@ -1,4 +1,4 @@
-import { IEffortAdjustmentFactor } from '../interfaces/eaf.interface';
+import { IEffortAdjustmentFactor } from './../interfaces/project/eaf.interface';
 
 export const eaf: IEffortAdjustmentFactor[] = [
   {

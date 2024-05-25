@@ -1,81 +1,55 @@
+import FunctionPointEntity from '@entities/functionPoint/functionPoint.entity';
 import { Injectable } from '@nestjs/common';
-import PrismaConnectorService from 'src/database/prismaConnector/prisma.connector.service';
-import {
-  IFunctionPointEntity,
-  ConvertMode,
-  ConvertOutput,
-  BaseFunctionPoint,
-} from 'shared';
-import { IFunctionPointAttributes } from 'shared';
-import { FPID } from './functionPoint.entity.interface';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { RecordNotFoundError } from 'src/shared/errors';
+import {
+  ICreateFunctionPointDATA,
+  IUpdateFunctionPointDATA,
+} from '@entities/functionPoint/functionPoint.interface';
 
 @Injectable()
-export class FunctionPointDao {
-  constructor(private prisma: PrismaConnectorService) {}
+export default class FunctionPointDAO {
+  constructor(
+    @InjectRepository(FunctionPointEntity)
+    private functionPointRepository: Repository<FunctionPointEntity>,
+  ) {}
 
-  private functionPointConverter<T extends ConvertMode>(
-    mode: T,
-    data: ConvertOutput<T, IFunctionPointEntity, BaseFunctionPoint>,
-  ) {
-    if (mode === 'toJSON') {
-      (data as IFunctionPointEntity).attributes = JSON.parse(
-        data.attributes as string,
+  public async getFunctionPointRecord(functionPointID: number) {
+    const functionPointEntity = await this.functionPointRepository.findOne({
+      where: { functionPointID },
+    });
+
+    if (functionPointEntity === null)
+      throw new RecordNotFoundError(
+        `FunctionPoint record with id ${functionPointID} is not found`,
       );
 
-      return data;
-    }
-
-    (data as BaseFunctionPoint).attributes = JSON.stringify(
-      data.attributes as IFunctionPointAttributes,
-    );
-
-    return data;
+    return functionPointEntity;
   }
 
-  public async getFunctionPoint(fpID: FPID) {
-    const functionPointRecord = await this.prisma.functionpoint.findUnique({
-      where: { fpID },
-    });
+  public async createFunctionPointRecord(data: ICreateFunctionPointDATA) {
+    const newFunctionPointEntity = this.functionPointRepository.save(data);
 
-    if (functionPointRecord === null) {
-      throw new RecordNotFoundError('Record Not Found');
-    }
-
-    return functionPointRecord;
+    return newFunctionPointEntity;
   }
 
-  public async createFunctionPoint(data: IFunctionPointAttributes) {
-    const newFunctionPointRecord = await this.prisma.functionpoint.create({
-      data: { attributes: JSON.stringify(data) },
-    });
-
-    return this.functionPointConverter('toJSON', newFunctionPointRecord);
-  }
-
-  public async deleteFunctionPoint(fpID: FPID) {
-    const deletedRecord = await this.prisma.functionpoint.delete({
-      where: { fpID },
-    });
-
-    if (deletedRecord === null)
-      throw new RecordNotFoundError('Record Not Found');
-
-    return deletedRecord;
-  }
-
-  public async updateFunctionPoint(
-    functionPointID: FPID,
-    attributes: IFunctionPointAttributes,
+  public async updateFunctionpointRecord(
+    functionPointID: number,
+    data: IUpdateFunctionPointDATA,
   ) {
-    const updatedRecord = await this.prisma.functionpoint.update({
-      data: { attributes: JSON.stringify(attributes) },
-      where: { fpID: functionPointID },
+    await this.getFunctionPointRecord(functionPointID);
+
+    const updatedRecord = await this.functionPointRepository.save({
+      ...data,
+      functionPointID,
     });
 
-    if (updatedRecord === null)
-      throw new RecordNotFoundError('Record Not Found');
+    return updatedRecord;
+  }
 
-    return this.functionPointConverter('toJSON', updatedRecord);
+  public async deleteFunctionPointRecord(functionPonitID: number) {
+    await this.getFunctionPointRecord(functionPonitID);
+    await this.functionPointRepository.delete(functionPonitID);
   }
 }

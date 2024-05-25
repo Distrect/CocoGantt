@@ -15,7 +15,7 @@ export type ConvertOutput<
   T extends ConvertMode,
   K extends any,
   L extends any,
-> = T extends 'toString' ? K : L;
+> = T extends 'toString' ? Partial<K> : Partial<L>;
 
 export type IJSONConverter<
   T extends AllBaseEntites,

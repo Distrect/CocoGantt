@@ -1,83 +1,52 @@
-import { UpdateRecordData } from './cocomo.entity.interface';
-import { Injectable } from '@nestjs/common';
-import { Functionpoint, Prisma, PrismaClient } from '@prisma/client';
+import CocomoEntity from '@entities/cocomo/cocomo.entity';
 import {
-  BaseCocomo,
-  ConvertMode,
-  ConvertOutput,
-  ICAF,
-  ICocomoEntity,
-  ReturnConverter,
-} from 'shared';
-import PrismaConnectorService from 'src/database/prismaConnector/prisma.connector.service';
-import { RecordNotFoundError, RecordOperationError } from 'src/shared/errors';
-
-type shortCut<T extends ConvertMode> = ReturnConverter<
-  T,
-  BaseCocomo,
-  ICocomoEntity
->;
+  ICreateCocomoDATA,
+  IGetCocomoDATA,
+  IUpdateCocomoDATA,
+} from '@entities/cocomo/cocomo.interface';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { RecordNotFoundError } from 'src/shared/errors';
+import { Repository } from 'typeorm';
 
 @Injectable()
-export default class COCOMODao {
-  private model: Prisma.CocomoDelegate;
+export default class CocomoDAO {
+  constructor(
+    @InjectRepository(CocomoEntity)
+    private cocomoRepository: Repository<CocomoEntity>,
+  ) {}
 
-  constructor(prisma: PrismaConnectorService) {
-    this.model = prisma.cocomo;
+  public async createCocomoRecord(data: ICreateCocomoDATA) {
+    const newCocomoEntity = await this.cocomoRepository.save(data);
+
+    return newCocomoEntity;
   }
 
-  // public cocomoConverter<T extends ConvertMode>(
-  //   mode: T,
-  //   record: Partial<ConvertOutput<T, ICocomoEntity, BaseCocomo>>,
-  // ): shortCut<T> {
-  //   if (mode === 'toJSON') {
-  //     (record as ICocomoEntity).cafJson = JSON.parse(record.cafJson as string);
-
-  //     return record as ReturnConverter<T>;
-  //   }
-
-  //   (record as BaseCocomo).cafJson = JSON.stringify(record.cafJson as ICAF);
-
-  //   return record as ReturnConverter<T>;
-  // }
-
-  public async getCocomoRecord(cocomoID: BaseCocomo['cocomoID']) {
-    const cocomoRecord = await this.model.findUnique({ where: { cocomoID } });
+  public async getCocomoRecord(args: IGetCocomoDATA) {
+    const cocomoRecord = await this.cocomoRepository.findOne({ where: args });
 
     if (cocomoRecord === null)
-      throw new RecordNotFoundError(`Record with id ${cocomoID}`);
+      throw new RecordNotFoundError(`Cocomo record is not found`);
 
     return cocomoRecord;
   }
 
-  public async createCocomoRecord(data: Prisma.CocomoCreateInput) {
-    // const convertedData = this.cocomoConverter('toString', data);
-
-    const newCocomoRecord = await this.model.create({ data });
-
-    return newCocomoRecord;
-  }
-
-  public async deleteCocomoRecord(cocomoID: BaseCocomo['cocomoID']) {
-    const deletedRecord = await this.model.delete({ where: { cocomoID } });
-
-    return;
+  public async deleteCocomoRecord(args: IGetCocomoDATA) {
+    await this.getCocomoRecord(args);
+    await this.cocomoRepository.delete(args);
   }
 
   public async updateCocomoRecord(
-    cocomoID: number,
-    data: Prisma.CocomoUpdateInput,
+    args: IGetCocomoDATA,
+    data: IUpdateCocomoDATA,
   ) {
-    // const { cocomoID, ...rest } = this.cocomoConverter('toString', data);
+    await this.getCocomoRecord(args);
 
-    const updatedCocomoRecord = await this.model.update({
-      where: { cocomoID },
-      data,
+    const updatedCocomoEntity = await this.cocomoRepository.save({
+      ...data,
+      ...args,
     });
 
-    if (updatedCocomoRecord === null)
-      throw new RecordNotFoundError(`Record with id ${cocomoID}`);
-
-    return updatedCocomoRecord;
+    return updatedCocomoEntity;
   }
 }
