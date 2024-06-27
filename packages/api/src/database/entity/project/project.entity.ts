@@ -48,6 +48,7 @@ export default class ProjectEntity {
   )
   teamMembers: TeamMemberEntity[];
 
-  @OneToMany(() => GanttEntity, (ganttEntity) => ganttEntity.project)
+  @OneToOne(() => GanttEntity, (ganttEntity) => ganttEntity.project)
+  @JoinColumn({ name: 'ganttFID', referencedColumnName: 'ganttID' })
   gantt: GanttEntity;
 }

@@ -1,5 +1,5 @@
 import GanttEntity from '@entities/gantt/gant.entity';
-import { PredecessorType } from './../../../../../shared/interfaces/project/task.interface';
+import { PredecessorType } from 'shared/interfaces';
 import {
   Entity,
   PrimaryGeneratedColumn,

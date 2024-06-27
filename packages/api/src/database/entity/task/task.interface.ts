@@ -1,6 +1,8 @@
-import GanttEntity from '@entities/gantt/gant.entity';
 import TaskEntity from '@entities/task/task.entity';
-import { PredecessorType } from 'shared/interfaces/project/task.interface';
+
+type TaskKeys = keyof TaskEntity;
+
+export interface ITask extends Pick<TaskEntity, TaskKeys> {}
 
 export type IGetTaskDATA =
   | {

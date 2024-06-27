@@ -1,12 +1,6 @@
 import ProjectEntity from '@entities/project/project.entity';
 import TaskEntity from '@entities/task/task.entity';
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export default class GanttEntity {
@@ -16,6 +10,6 @@ export default class GanttEntity {
   @OneToMany(() => TaskEntity, (taskEntity) => taskEntity.gantt)
   tasks: TaskEntity[];
 
-  @ManyToOne(() => ProjectEntity, (projectEntity) => projectEntity.gantt)
+  @OneToOne(() => ProjectEntity, (projectEntity) => projectEntity.gantt)
   project: ProjectEntity;
 }
